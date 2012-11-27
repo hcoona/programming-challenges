@@ -77,6 +77,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="110101.cpp" />
+    <ClCompile Include="110102.cpp" />
+    <ClCompile Include="110103.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

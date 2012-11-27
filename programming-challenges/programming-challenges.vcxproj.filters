@@ -21,6 +21,12 @@
     <ClCompile Include="110101.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="110102.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="110103.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entry_points.h">
