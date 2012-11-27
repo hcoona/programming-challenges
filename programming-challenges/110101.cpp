@@ -71,9 +71,13 @@ int Resolver110101::calculate_cycle_length(
 	if(cycle_length != INVALID_VALUE) return cycle_length;
 
 	if(n & 1) {
-		cycle_length = calculate_cycle_length(n * 3LL + 1LL, table, out_of_range_mapper) + 1;
+		TYPE110101 new_n = n * 3 + 1;
+		if(new_n < n) {
+			throw new overflow_error("Overflow when make a new n");
+		}
+		cycle_length = calculate_cycle_length(new_n, table, out_of_range_mapper) + 1;
 	} else {
-		cycle_length = calculate_cycle_length(n / 2LL, table, out_of_range_mapper) + 1;
+		cycle_length = calculate_cycle_length(n / 2, table, out_of_range_mapper) + 1;
 	}
 
 	update_table_and_mapper(n, cycle_length, table, out_of_range_mapper);
