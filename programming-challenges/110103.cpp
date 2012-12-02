@@ -9,50 +9,65 @@ class Resolver110103
 {
 public:
 	void AddStudent(double amount);
-	double OptimalExchangeMoney(void) const;
+	double OptimalExchangeMoney(void);
 private:
 	const int numberOfStudent;
-	double * moneyArray;
+	int * moneyArray;
 	int currentArrayPos;
-	double sumOfMoney;
+	int sumOfMoney;
 public:
 	Resolver110103(int numberOfStudent)
 		: currentArrayPos(0), sumOfMoney(0), numberOfStudent(numberOfStudent) {
-		moneyArray = new double[numberOfStudent];
+		moneyArray = new int[numberOfStudent];
 	}
 	~Resolver110103(void) {
 		delete[] moneyArray;
 	}
+private:
+	int RoundDecimal(const double &value) const {
+		return static_cast<int>(value + 0.5);
+	}
+	int OneHundredLargerRound(const double &value) const {
+		return RoundDecimal(value * 100.0);
+	}
 };
 
 void Resolver110103::AddStudent(double amount) {
-	moneyArray[currentArrayPos++] = amount;
-	sumOfMoney += amount;
+	int scaledMoney = OneHundredLargerRound(amount);
+	moneyArray[currentArrayPos++] = scaledMoney;
+	sumOfMoney += scaledMoney;
 }
 
-double Resolver110103::OptimalExchangeMoney(void) const {
-	int numberOfHigherAverage = static_cast<int>(sumOfMoney * 100.0 + 0.5) % numberOfStudent;
-	double average = sumOfMoney / static_cast<double>(currentArrayPos);
-	average = floor(average * 100.0) / 100.0;
-
-	double result = 0.0;
-	if(numberOfHigherAverage && (numberOfHigherAverage * 2 < numberOfStudent)) {
-		average += 0.01;
-		for(int i = 0; i < numberOfStudent; i++) {
-			const double & value = moneyArray[i];
-			if(value > average) {
-				result += value - average;
-			}
+double Resolver110103::OptimalExchangeMoney(void) {
+	int numberOfStudentAdjustToCeilingAverage = sumOfMoney % numberOfStudent;
+	if(numberOfStudentAdjustToCeilingAverage) {
+		int numberOfStudentAdjustToFlooringAverage = 
+			numberOfStudent - numberOfStudentAdjustToCeilingAverage;
+		int flooringAverage = RoundDecimal(
+			floor(static_cast<double>(sumOfMoney) 
+				/ static_cast<double>(numberOfStudent)));
+	
+		sort(moneyArray, &moneyArray[numberOfStudent]);
+		int adjust = 0;
+		for(int i = 0; i < numberOfStudentAdjustToFlooringAverage; i++) {
+			adjust += labs(flooringAverage - moneyArray[i]);
 		}
+		int ceilingAverage = flooringAverage + 1;
+		for(int i = numberOfStudentAdjustToFlooringAverage; i < numberOfStudent; i++) {
+			adjust += labs(moneyArray[i] - ceilingAverage);
+		}
+		return static_cast<double>(adjust) / 2.0 / 100.0;
 	} else {
+		int average = sumOfMoney / numberOfStudent;
+		int adjust = 0;
 		for(int i = 0; i < numberOfStudent; i++) {
-			const double & value = moneyArray[i];
+			const int & value = moneyArray[i];
 			if(value < average) {
-				result += average - value;
+				adjust += average - value;
 			}
 		}
+		return static_cast<double>(adjust) / 100.0;
 	}
-	return result;
 }
 
 int entry110103(void)
