@@ -12,8 +12,15 @@ As simple as naive.
 
 ## 110103 The Trip
 
-Very difficult. I think there should be an algorithm with $O(n)$ complexity, but my solution is $O(n \lg n)$.
+Difficult. I think there should be an algorithm with $O(n)$ complexity, but my solution is $O(n \lg n)$.
 
 The core idea is quite naive: if the average is not an integer, there must be part of people shoud be adjusted to the ceiling of average, and the others flooring of average.
 
 Reference: http://blog.csdn.net/metaphysis/article/details/6432062 (But this is a wrong answer actually.)
+
+## 110104 LC-Display
+
+Straight forward.
+
+Several design pattern could be used here to increase the readability of codes. I really agree that **The Design Patterns are bed smells**, the code should be much simpler than what it currently is if I could use C# instead.
+

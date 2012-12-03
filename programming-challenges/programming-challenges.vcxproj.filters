@@ -30,6 +30,9 @@
     <ClCompile Include="110103metaphysis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="110104.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entry_points.h">
