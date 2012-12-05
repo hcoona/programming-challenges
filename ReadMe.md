@@ -22,5 +22,5 @@ Reference: http://blog.csdn.net/metaphysis/article/details/6432062 (But this is 
 
 Straight forward.
 
-Several design pattern could be used here to increase the readability of codes. I really agree that **The Design Patterns are bed smells**, the code should be much simpler than what it currently is if I could use C# instead.
+Several design pattern could be used here to increase the readability of codes. I really agree that **The Design Patterns are bad smells**, the code should be much simpler than what it currently is if I could use C# instead.
 
