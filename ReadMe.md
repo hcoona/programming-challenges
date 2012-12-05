@@ -24,3 +24,9 @@ Straight forward.
 
 Several design pattern could be used here to increase the readability of codes. I really agree that **The Design Patterns are bed smells**, the code should be much simpler than what it currently is if I could use C# instead.
 
+## 110105 Graphical Editor
+
+Easy. Use flood fill for region fill.
+
+Reference: http://en.wikipedia.org/wiki/Flood_fill
+
