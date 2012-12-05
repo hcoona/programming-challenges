@@ -7,23 +7,33 @@
 
 using namespace std;
 
+class Position : public pair<int, int> {
+public:
+	Position(const int & row, const int & col) : pair<int, int>(row, col) { }
+	friend Position operator+(const Position & Left,const Position & Right) {
+		return Position(Left.first + Right.first, Left.second + Right.second);
+	}
+};
+
 class Resolver10105 {
 private:
-	static const int WhiteColor = '0';
-	static const int InvalidColor = -1;
-	typedef const pair<int, int> Point;
+	static const int MaxRows = 250;
+	static const int MaxCols = 250;
+	static const char WhiteColor = '0';
 private:
-	int rows, cols;
-	int ** image;
+	const int rows, cols;
+	char image[MaxRows][MaxCols];
 public:
-	Resolver10105(void) : rows(0), cols(0), image(0) { }
-	~Resolver10105(void) { Delete(); }
-	void Eval(const char & cmd, const string & parameters);
-private:
-	void Create(const int & rows, const int & cols);
-	void Delete(void);
-	void Clear(void);
-	void Let(const int & x, const int & y, const char & color);
+	Resolver10105(void) : rows(0), cols(0) {
+		Clear();
+	}
+	void Initialize(const int & rows, const int & cols) {
+		const_cast<int &>(this->rows) = rows;
+		const_cast<int &>(this->cols) = cols;
+		Clear();
+	}
+	void Clear(void) { fill(&image[0][0], &image[MaxRows - 1][MaxCols - 1], WhiteColor); }
+	void Let(const int & x, const int & y, const char & color) { image[y - 1][x - 1] = color; }
 	void VerticalSegment(const int & x, const int & y1, const int &y2, const char & color);
 	void HorizontalSegment(const int & x1, const int & x2, const int y, const char & color);
 	void Rectangle(const int & x1, const int & x2,
@@ -31,187 +41,179 @@ private:
 	void FillRegion(const int & x, const int & y, const char & color);
 	const string Save(const string & name) const;
 private:
-	bool IsPointValid(Point & point) const;
+	bool IsValidPosition(const Position & position) const;
+	char & Pixel(const Position & position);
+	const char & Pixel(const Position & position) const;
 };
 
-void Resolver10105::Eval(const char & cmd, const string & parameters) {
-	stringstream stream(parameters);
-	switch(cmd) {
-	case 'I': {
-		int rows, cols;
-		stream >> cols >> rows;
-		Create(rows, cols);
-		break;
-	}
-	case 'C': Clear(); break;
-	case 'L': {
-		int x, y;
-		char c;
-		stream >> x >> y >> c;
-		Let(x, y, c);
-		break;
-	}
-	case 'V': {
-		int x, y1, y2;
-		char c;
-		stream >> x >> y1 >> y2 >> c;
-		VerticalSegment(x, y1, y2, c);
-		break;
-	}
-	case 'H': {
-		int x1, x2, y;
-		char c;
-		stream >> x1 >> x2 >> y >> c;
-		HorizontalSegment(x1, x2, y, c);
-		break;
-	}
-	case 'K': {
-		int x1, x2, y1, y2;
-		char c;
-		stream >> x1 >> x2 >> y1 >> y2 >> c;
-		Rectangle(x1, x2, y1, y2, c);
-		break;
-	}
-	case 'F': {
-		int x, y;
-		char c;
-		stream >> x >> y >> c;
-		FillRegion(x, y, c);
-		break;
-	}
-	case 'S': {
-		string name;
-		stream >> name;
-		cout << Save(name);
-		break;
-	}
-	default: break;
+void Resolver10105::VerticalSegment(const int & x, 
+	const int & y1, const int &y2, const char & color) {
+	const int RowFrom = min(y1, y2) - 1, RowTo = max(y1, y2) - 1;
+	const int Col = x - 1;
+
+	for(int row = RowFrom; row <= RowTo; row++) {
+		image[row][Col] = color;
 	}
 }
 
-void Resolver10105::Create(const int & rows, const int & cols) {
-	Delete();
-	this->rows = rows;
-	this->cols = cols;
-	image = new int * [rows];
-	for(int i = 0; i < rows; i++) {
-		image[i] = new int[cols];
-	}
-	Clear();
-}
+void Resolver10105::HorizontalSegment(const int & x1, const int & x2,
+									  const int y, const char & color) {
+	const int ColFrom = min(x1, x2) - 1, ColTo = max(x1, x2) - 1;
+	const int Row = y - 1;
 
-void Resolver10105::Delete(void) {
-	if(image) {
-		for(int i = 0; i < rows; i++) {
-			delete[] image[i];
-		}
-		delete[] image;
-		rows = cols = 0;
-		image = 0;
-	}
-}
-
-void Resolver10105::Clear(void) {
-	for(int i = 0; i < rows; i++) {
-		for(int j = 0; j < cols; j++) {
-			image[i][j] = WhiteColor;
-		}
-	}
-}
-
-void Resolver10105::Let(const int & x, const int & y, const char & color) {
-	image[x][y] = color;
-}
-
-void Resolver10105::VerticalSegment(
-	const int & x, const int & y1, const int &y2, const char & color) {
-	int yy1 = min(y1, y2), yy2 = max(y1, y2);
-	for(int j = yy1; j <= yy2; j++) {
-		image[x][j] = color;
-	}
-}
-
-void Resolver10105::HorizontalSegment(
-	const int & x1, const int & x2, const int y, const char & color) {
-	int xx1 = min(x1, x2), xx2 = max(x1, x2);
-	for(int i = xx1; i <= xx2; i++) {
-		image[i][y] = color;
+	for(int col = ColFrom; col <= ColTo; col++) {
+		image[Row][col] = color;
 	}
 }
 
 void Resolver10105::Rectangle(const int & x1, const int & x2,
-	const int & y1, const int &y2, const char & color) {
-	int xx1 = min(x1, x2), xx2 = max(x1, x2);
-	int yy1 = min(y1, y2), yy2 = max(y1, y2);
-	for(int i = xx1; i <= xx2; i++) {
-		for(int j = yy1; j <= yy2; j++) {
-			image[i][j] = color;
+							  const int & y1, const int &y2,
+							  const char & color) {
+	const int RowFrom = min(y1, y2) - 1, RowTo = max(y1, y2) - 1;
+	const int ColFrom = min(x1, x2) - 1, ColTo = max(x1, x2) - 1;
+
+	for(int row = RowFrom; row <= RowTo; row++) {
+		for(int col = ColFrom; col <= ColTo; col++) {
+			image[row][col] = color;
 		}
 	}
 }
 
 void Resolver10105::FillRegion(const int & x, const int & y, const char & color) {
-	const int MarkerColor = InvalidColor;
-	const int SeedColor = image[x][y];
+	const int Row = y - 1, Col = x - 1;
+	const char SeedColor = image[Row][Col];
+	
+	const int NeighborCount = 4;
+	const Position DeltaNeighbors[NeighborCount] = {
+		Position(-1, 0), Position(1, 0), Position(0, -1), Position(0, 1)
+	};
+	const char MarkerColor = -1;
 
-	queue<Point> fillQueue;
-	fillQueue.push(make_pair(x, y));
+	queue<const Position> fillQueue;
+	fillQueue.push(Position(Row, Col));
 
 	while(!fillQueue.empty()) {
-		Point & currentPoint = fillQueue.front();
-		image[currentPoint.first][currentPoint.second] = MarkerColor;
+		const Position & p = fillQueue.front();
+		if(Pixel(p) != MarkerColor) {
+			Pixel(p) = MarkerColor;
+			for(int i = 0; i < NeighborCount; i++) {
+				const Position & neighbor = p + DeltaNeighbors[i];
+				if(IsValidPosition(neighbor) && Pixel(neighbor) == SeedColor) {
+					fillQueue.push(neighbor);
+				}
+			}
+		}
 		fillQueue.pop();
+	}
 
-		const int NeighborPointsCount = 4;
-		Point neighborPoints[NeighborPointsCount] = {
-			make_pair(currentPoint.first - 1, currentPoint.second),
-			make_pair(currentPoint.first, currentPoint.second - 1),
-			make_pair(currentPoint.first + 1, currentPoint.second),
-			make_pair(currentPoint.first, currentPoint.second + 1),
-		};
-		for(int i = 0; i < NeighborPointsCount; i++) {
-			Point & p = neighborPoints[i];
-			if(IsPointValid(p) && image[p.first][p.second] == SeedColor) {
-				fillQueue.push(p);
+	for(int row = 0; row <= rows; row++) {
+		for(int col = 0; col <= cols; col++) {
+			if(image[row][col] == MarkerColor) {
+				image[row][col] = color;
 			}
 		}
 	}
-	
-	for(int i = 0; i < rows; i++) {
-		for(int j = 0; j < cols; j++) {
-			if(image[i][j] == MarkerColor)
-				image[i][j] = color;
-		}
-	}
-}
-
-bool Resolver10105::IsPointValid(Point & point) const {
-	const int & x = point.first;
-	const int & y = point.second;
-	return x >= 0 && x <= cols
-		&& y >= 0 && y <= rows;
 }
 
 const string Resolver10105::Save(const string & name) const {
-	ostringstream out;
-	out << name << endl;
-	for(int i = 0; i < rows; i++) {
-		for(int j = 0; j < cols; j++) {
-			out << static_cast<char>(image[i][j]);
+	ostringstream stream;
+	stream << name << endl;
+	for(int row = 0; row <= rows; row++) {
+		for(int col = 0; col <= cols; col++) {
+			stream << image[row][col];
 		}
-		out << endl;
+		stream << endl;
 	}
-	return out.str();
+	return stream.str();
 }
 
-int entry110105(void) {
+bool Resolver10105::IsValidPosition(const Position & position) const {
+	return position.first >= 0 && position.first <= rows
+		&& position.second >= 0 && position.second <= cols;
+}
+
+char & Resolver10105::Pixel(const Position & position) {
+	return image[position.first][position.second];
+}
+
+const char & Resolver10105::Pixel(const Position & position) const {
+	return image[position.first][position.second];
+}
+
+class Interpreter110105 {
+private:
 	Resolver10105 resolver;
-	const int BUFF_SIZE = 1024;
-	char buffer[BUFF_SIZE];
-	char cmd;
-	while(cin >> cmd && cmd != 'X') {
-		cin.getline(buffer, BUFF_SIZE);
-		resolver.Eval(cmd, buffer);
+public:
+	void Parse(const string & line) {
+		istringstream stream(line);
+		char cmd;
+		stream >> cmd;
+		switch(cmd) {
+		case 'I': {
+			int rows, cols;
+			stream >> cols >> rows;
+			resolver.Initialize(rows, cols);
+			break;
+		}
+		case 'C': resolver.Clear(); break;
+		case 'L': {
+			int x, y;
+			char c;
+			stream >> x >> y >> c;
+			resolver.Let(x, y, c);
+			break;
+		}
+		case 'V': {
+			int x, y1, y2;
+			char c;
+			stream >> x >> y1 >> y2 >> c;
+			resolver.VerticalSegment(x, y1, y2, c);
+			break;
+		}
+		case 'H': {
+			int x1, x2, y;
+			char c;
+			stream >> x1 >> x2 >> y >> c;
+			resolver.HorizontalSegment(x1, x2, y, c);
+			break;
+		}
+		case 'K': {
+			int x1, x2, y1, y2;
+			char c;
+			stream >> x1 >> x2 >> y1 >> y2 >> c;
+			resolver.Rectangle(x1, x2, y1, y2, c);
+			break;
+		}
+		case 'F': {
+			int x, y;
+			char c;
+			stream >> x >> y >> c;
+			resolver.FillRegion(x, y, c);
+			break;
+		}
+		case 'S': {
+			string name;
+			stream >> name;
+			cout << resolver.Save(name);
+			break;
+		}
+		default: break;
+		}
+	}
+};
+
+#ifndef BUFSIZ
+#define BUFSIZ 1024
+#endif
+
+int entry110105(void) {
+	Interpreter110105 interpreter;
+	char lineBuffer[BUFSIZ];
+    while(true) {
+		cin.getline(lineBuffer, BUFSIZ);
+		if(lineBuffer[0] == 'X') break;
+
+		interpreter.Parse(lineBuffer);
 	}
 	return 0;
 }
