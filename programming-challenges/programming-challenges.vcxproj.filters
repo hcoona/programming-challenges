@@ -36,6 +36,9 @@
     <ClCompile Include="110105.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="110106.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entry_points.h">
