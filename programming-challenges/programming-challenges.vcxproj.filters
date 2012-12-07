@@ -48,6 +48,9 @@
     <ClCompile Include="110201.cpp">
       <Filter>Source Files\Chap2</Filter>
     </ClCompile>
+    <ClCompile Include="110202.cpp">
+      <Filter>Source Files\Chap2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entry_points.h">

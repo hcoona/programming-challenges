@@ -41,3 +41,7 @@ Don't know why getting WA.
 ### 110201 Jolly Jumper
 
 Easy. Notice that the difference would appear from 1 to n - 1 only once. This would reduce the time judging whether this sequence is a Jolly Jumper.
+
+### 110202 Poker Hands
+
+Seem that inhert relation could simplify the codes.
