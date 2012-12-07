@@ -13,31 +13,40 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Chap1">
+      <UniqueIdentifier>{2c8066f9-138f-4d6d-a4ec-fe43a0d51778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Chap2">
+      <UniqueIdentifier>{5e844952-8bc3-4537-b4c4-cf4a8f59db2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="110101.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Chap1</Filter>
     </ClCompile>
     <ClCompile Include="110102.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Chap1</Filter>
     </ClCompile>
     <ClCompile Include="110103.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Chap1</Filter>
     </ClCompile>
     <ClCompile Include="110103metaphysis.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Chap1</Filter>
     </ClCompile>
     <ClCompile Include="110104.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Chap1</Filter>
     </ClCompile>
     <ClCompile Include="110105.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Chap1</Filter>
     </ClCompile>
     <ClCompile Include="110106.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Chap1</Filter>
+    </ClCompile>
+    <ClCompile Include="110201.cpp">
+      <Filter>Source Files\Chap2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
