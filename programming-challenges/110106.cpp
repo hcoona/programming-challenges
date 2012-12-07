@@ -111,13 +111,12 @@ int entry110106(void) {
 	char lineBuffer[BUFSIZ];
 	cin.getline(lineBuffer, BUFSIZ);
 	cin.getline(lineBuffer, BUFSIZ);
-
-	stringstream stream;
+	
 	while(n--) {
 		unsigned instructions[Resolver110106::MemorySize] = { 0 };
 		int instIdx = 0;
 		while(cin.getline(lineBuffer, BUFSIZ) && cin.gcount() > 1) {
-			stream << lineBuffer;
+			stringstream stream(lineBuffer);
 			stream >> instructions[instIdx++];
 		}
 
