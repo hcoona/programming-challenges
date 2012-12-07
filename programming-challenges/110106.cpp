@@ -59,11 +59,10 @@ private:
 		const int & address = registers[addressRegisterId];
 		registers[toRegisterId] = memory[address];
 	}
-	void SetValueOfAddressInRegisterToValueOfAddressInAnotherRegister(
-		const int & toAddressRegisterId, const int & fromAddressRegisterId) {
+	void SetValueOfAddressInRegisterToValueOfAnotherRegister(
+		const int & toAddressRegisterId, const int & fromRegisterId) {
 		const int & toAddress = registers[toAddressRegisterId];
-		const int & fromAddress = registers[fromAddressRegisterId];
-		memory[toAddress] = memory[fromAddress];
+		memory[toAddress] = registers[fromRegisterId];
 	}
 
 public:
@@ -93,7 +92,7 @@ void Resolver110106::Execute(void) {
 		case 6: AddRegisterFromValueOfAnother(p1, p2); break;
 		case 7: MultiplyRegisterByValueOfAnother(p1, p2); break;
 		case 8: SetRegisterFromValueOfAddressInRegister(p1, p2); break;
-		case 9: SetValueOfAddressInRegisterToValueOfAddressInAnotherRegister(p1, p2); break;
+		case 9: SetValueOfAddressInRegisterToValueOfAnotherRegister(p1, p2); break;
 		case 0: if(registers[p2] % 1000) { pc = registers[p1] - 1; continue; } else break;
 		default: throw new invalid_argument("Invalid instruction");
 		}

@@ -2,5 +2,5 @@
 
 int main(void)
 {
-	return entry110201();
+	return entry110106();
 }
